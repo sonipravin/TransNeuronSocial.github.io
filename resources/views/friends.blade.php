@@ -13,26 +13,28 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <table class="table table-dark">
-                        <thead>
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Friend</th>
-                              <th scope="col">Follower/Following</th>
-                              <th scope="col">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                              @foreach($user as $key=>$friend)
-                                  <tr>
-                                    <th scope="row">1</th>
-                                    <td><a href="{{url('/other_profile/'.$friend->id)}}">{{$friend->name}}</a></td>
-                                    <td>Follower</td>
-                                    <td><a href="{{url('/other_profile/'.$friend->id)}}">View Profile</a></td>
-                                  </tr>
-                              @endforeach
-                        </tbody>
-                    </table>
+                    @if(count($user))
+                      <table class="table table-dark">
+                          <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Friend</th>
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user as $key=>$friend)
+                                    <tr>
+                                      <th scope="row">1</th>
+                                      <td><a href="{{url('/other_profile/'.$friend->id)}}">{{$friend->name}}</a></td>
+                                      <td><a href="{{url('/other_profile/'.$friend->id)}}">View Profile</a></td>
+                                    </tr>
+                                @endforeach
+                          </tbody>
+                      </table>
+                  @else
+                    No Friends found
+                  @endif
                 </div>
             </div>
         </div>

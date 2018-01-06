@@ -13,24 +13,28 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <table class="table table-dark">
-                        <thead>
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Friend Request</th>
-                              <th scope="col">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($pendingRequest as $key=>$request)
-                                <tr>
-                                  <th scope="row">1</th>
-                                  <td>{{$request->name}}</td>
-                                  <td><a href="{{url('/acceptRequest/'.$request->id)}}">Accept</a></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    @if(count($pendingRequest))
+                      <table class="table table-dark">
+                          <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Friend Request</th>
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach($pendingRequest as $key=>$request)
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>{{$request->name}}</td>
+                                    <td><a href="{{url('/acceptRequest/'.$request->id)}}">Accept</a></td>
+                                  </tr>
+                              @endforeach
+                          </tbody>
+                      </table>
+                    @else
+                      No pending request found
+                    @endif
                 </div>
             </div>
         </div>

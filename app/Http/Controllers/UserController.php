@@ -6,28 +6,49 @@ use Illuminate\Http\Request;
 
 use App\User;
 use Auth;
+use Session;
 
 class UserController extends Controller
 {
     public function index(Request $request){
 
+    	$friend = User::find(Auth::user()->id);
+
+		$friend = $friend->whereHas('follower',function($q) {
+			$q->where('follower_id',Auth::user()->id);
+	    		})
+	    	->orwhereHas('following',function($q) {
+	    			$q->where('following_id',Auth::user()->id);
+	    		})->pluck('id');
+
     	if($request['search'])
     	{
-    		$user = User::where('name','like','%'.$request['search'].'%')->get();
-    	}else{
-    		$user = User::find(Auth::user()->id);
-    		$user = $user->whereHas('follower',function($q) {
-    			$q->where('follower_id','!=',Auth::user()->id);
-		    		})
-		    	->orwhereHas('following',function($q) {
-		    			$q->where('following_id','!=',Auth::user()->id);
-		    		})->get();
+    		$user = User::where('name','like','%'.$request['search'].'%')->where('id','!=',Auth::user()->id)->whereNotIn('id',$friend)->get();
 
+    		if(count($user))
+    		{
+    			$message = NULL;
+    		}else{
+    			$message = 'No Record found. please try something else !';
+    		}
+    		
+    	}else{
+    		$user = NULL;		
+    		$message = NULL;    
     	}
-    	return view('index',compact('user'));		
+
+    	return view('index',compact('user','message'));		
     }
 
-    public function friendlist(Request $request){
+    public function addfriend($id){
+
+    	$user = User::find(Auth::user()->id);
+    	$user->following()->attach($id,['status'=>1]);    	
+    	\Session::flash('success','Connection added');
+    	return \Redirect('home');
+    }
+
+    public function friendlist(){
 
     	$user = User::find(Auth::user()->id);
 
@@ -43,7 +64,7 @@ class UserController extends Controller
     	return view('friends',compact('user'));		
     }
 
-    public function friendRequestList(Request $request){
+    public function friendRequestList(){
 
     	$user = User::find(Auth::user()->id);
 
@@ -58,13 +79,9 @@ class UserController extends Controller
     public function acceptfriendRequestList($id){
 
     	$user = User::find(Auth::user()->id);
-    	
-    	$data['status'] = 2;
-    	$acceptRequest = $user->whereHas('follower',function($q) use($id){
-    			$q->where('follower_id',$id);
-    		})->update($data);
-    	dd($acceptRequest);
-    	return view('pendingrequest',compact('pendingRequest'));		
+    	$user->follower()->updateExistingPivot($id,['status'=>2]);    	
+
+    	return \Redirect('request');	
     }
 
     public function otherprofile(Request $request,$id){

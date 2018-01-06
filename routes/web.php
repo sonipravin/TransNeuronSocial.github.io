@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'UserController@index')->name('home');
+Route::get('/addfriends/{id}', 'UserController@addfriend')->name('addfriend');
 Route::get('/friends', 'UserController@friendlist')->name('friends');
 Route::get('/request', 'UserController@friendRequestList')->name('request');
 Route::get('/acceptRequest/{id}', 'UserController@acceptfriendRequestList');

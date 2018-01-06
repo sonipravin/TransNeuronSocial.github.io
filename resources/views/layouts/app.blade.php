@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
+@php $reqCount =  \App\Utility::requestCount();@endphp
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
@@ -48,7 +49,9 @@
                         @else
                             <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="{{ route('friends') }}">Friends</a></li>
-                            <li><a href="{{ route('request') }}" >Friends Request</a>
+                            <li><a href="{{ route('request') }}" >Friends Request <span class="badge badge-danger">@if(($reqCount != 0) &&($reqCount != NULL))
+                            {{$reqCount}}
+                        @endif</span></a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">

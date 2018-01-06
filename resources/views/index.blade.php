@@ -21,28 +21,33 @@
                       </div>
                       <div class=" col-md-6 col-md-offset-3  form-group has-feedback">
                           <input type="submit" class="form-control btn-success" name="">
+                          <p>Note: Only no friend user will be shown on query</p>
                       </div>
                   </form>
-                  <table class="table table-dark">
-                        <thead>
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Name</th>
-                              <th scope="col">Email</th>
-                              <th scope="col">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($user as $key=>$users)
-                                <tr>
-                                  <th scope="row">1</th>
-                                  <td>{{$users->name}}</td>
-                                  <td>{{$users->email}}</td>
-                                  <td>View Profile</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                  @if(count($user))
+                    <table class="table table-dark">
+                      <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($user as $key=>$users)
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>{{$users->name}}</td>
+                            <td>{{$users->email}}</td>
+                            <td><a href="{{ url('/addfriends/'.$users->id)}}">Add friend</a></td>
+                          </tr>
+                        @endforeach
+                      </tbody>
                     </table>
+                  @else
+                    <p>{{$message}}</p>
+                  @endif
                 </div>
             </div>
         </div>
