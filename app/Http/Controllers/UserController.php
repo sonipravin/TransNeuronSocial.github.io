@@ -10,37 +10,42 @@ use Session;
 
 class UserController extends Controller
 {
-    public function index(Request $request){
+    
+    // Home page
+        public function index(Request $request)
+        {
+        	$friend = User::find(Auth::user()->id);
 
-    	$friend = User::find(Auth::user()->id);
+    		$friend = $friend->whereHas('follower',function($q) {
+    			$q->where('follower_id',Auth::user()->id);
+    	    		})
+    	    	->orwhereHas('following',function($q) {
+    	    			$q->where('following_id',Auth::user()->id);
+    	    		})->pluck('id');
 
-		$friend = $friend->whereHas('follower',function($q) {
-			$q->where('follower_id',Auth::user()->id);
-	    		})
-	    	->orwhereHas('following',function($q) {
-	    			$q->where('following_id',Auth::user()->id);
-	    		})->pluck('id');
+        	if($request['search'])
+        	{
+        		$user = User::where('name','like','%'.$request['search'].'%')->where('id','!=',Auth::user()->id)->whereNotIn('id',$friend)->get();
 
-    	if($request['search'])
-    	{
-    		$user = User::where('name','like','%'.$request['search'].'%')->where('id','!=',Auth::user()->id)->whereNotIn('id',$friend)->get();
+        		if(count($user))
+        		{
+        			$message = NULL;
+        		}else{
+        			$message = 'No Record found. please try something else !';
+        		}
+        		
+        	}else{
+        		$user = NULL;		
+        		$message = NULL;    
+        	}
 
-    		if(count($user))
-    		{
-    			$message = NULL;
-    		}else{
-    			$message = 'No Record found. please try something else !';
-    		}
-    		
-    	}else{
-    		$user = NULL;		
-    		$message = NULL;    
-    	}
+        	return view('index',compact('user','message'));		
+        }
 
-    	return view('index',compact('user','message'));		
-    }
+    // Add to friend
 
-    public function addfriend($id){
+    public function addfriend($id)
+    {
 
     	$user = User::find(Auth::user()->id);
     	$user->following()->attach($id,['status'=>1]);    	
@@ -48,8 +53,10 @@ class UserController extends Controller
     	return \Redirect('home');
     }
 
-    public function friendlist(){
+    // Friend Listing
 
+    public function friendlist()
+    {
     	$user = User::find(Auth::user()->id);
 
     	$user = $user->whereHas('follower',function($q) {
@@ -64,7 +71,10 @@ class UserController extends Controller
     	return view('friends',compact('user'));		
     }
 
-    public function friendRequestList(){
+    // Friend Request List
+
+    public function friendRequestList()
+    {
 
     	$user = User::find(Auth::user()->id);
 
@@ -76,7 +86,10 @@ class UserController extends Controller
     	return view('pendingrequest',compact('pendingRequest'));		
     }
 
-    public function acceptfriendRequestList($id){
+    // Accepting friend request
+
+    public function acceptfriendRequestList($id)
+    {
 
     	$user = User::find(Auth::user()->id);
     	$user->follower()->updateExistingPivot($id,['status'=>2]);    	
@@ -84,36 +97,39 @@ class UserController extends Controller
     	return \Redirect('request');	
     }
 
-    public function otherprofile(Request $request,$id){
+    // Friends Profile
 
-    	
-    	$Otheruser = User::whereId($id)->first();
+    public function otherprofile(Request $request,$id)
+    {
+    	// Friends of friend starts here
+        	$Otheruser = User::whereId($id)->first();
+        	$OtherSfriend = $Otheruser->whereHas('follower',function($q) use($id){
+    				$q->where('follower_id',$id);
+    				$q->where('status',2);
+    		    		})
+    		    	->orwhereHas('following',function($q) use($id) {
+    		    			$q->where('following_id',$id);
+    		    			$q->where('status',2);
+    		    		})->get();
+        // Friends of friend ends here
 
-    	$OtherSfriend = $Otheruser->whereHas('follower',function($q) use($id){
-				$q->where('follower_id',$id);
-				$q->where('status',2);
-		    		})
-		    	->orwhereHas('following',function($q) use($id) {
-		    			$q->where('following_id',$id);
-		    			$q->where('status',2);
-		    		})->get();
+        // my friends starts here
+    		$mySelf = User::whereId(Auth::user()->id)->first();
+    		$myFriend = $mySelf->whereHas('follower',function($q){
+    				$q->where('follower_id',Auth::user()->id);
+    				$q->where('status',2);
+    		    		})
+    		    	->orwhereHas('following',function($q) {
+    		    			$q->where('following_id',Auth::user()->id);
+    		    			$q->where('status',2);
+    		    		})->pluck('id');
+        	if(count($myFriend)){$myFriend = $myFriend->toArray();}
+        // my friends starts here
 
-		$mySelf = User::whereId(Auth::user()->id)->first();
-
-		$myFriend = $mySelf->whereHas('follower',function($q){
-				$q->where('follower_id',Auth::user()->id);
-				$q->where('status',2);
-		    		})
-		    	->orwhereHas('following',function($q) {
-		    			$q->where('following_id',Auth::user()->id);
-		    			$q->where('status',2);
-		    		})->pluck('id');
-    	if(count($myFriend)){$myFriend = $myFriend->toArray();}
-
-    		return view('othersProfile',[
-    							'OtherSfriend'=>$OtherSfriend,
-    							'myFriend'=>$myFriend,
-    							'Otheruser'=>$Otheruser
-    						]);
+		return view('othersProfile',[
+							'OtherSfriend'=>$OtherSfriend,
+							'myFriend'=>$myFriend,
+							'Otheruser'=>$Otheruser
+						]);
     }
 }
