@@ -1,10 +1,16 @@
 @extends('layouts.app')
-
+  <style type="text/css">
+    body{
+      background-image: url('img/friends1.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="background-color: #e2ebf0;">
                 <div class="panel-heading">My Friends</div>
 
                 <div class="panel-body">
@@ -22,18 +28,18 @@
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody>@php $i = 1;@endphp
                                 @foreach($user as $key=>$friend)
                                     <tr>
-                                      <th scope="row">1</th>
+                                      <th scope="row">{{$i}}</th>
                                       <td><a href="{{url('/other_profile/'.$friend->id)}}">{{$friend->name}}</a></td>
                                       <td><a href="{{url('/other_profile/'.$friend->id)}}">View Profile</a></td>
-                                    </tr>
+                                    </tr>@php $i++;@endphp
                                 @endforeach
                           </tbody>
                       </table>
                   @else
-                    No Friends found
+                    No Friends found, wait until they accept ! or you can accept other's request also!
                   @endif
                 </div>
             </div>

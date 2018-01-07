@@ -5,10 +5,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Trans Neuron</title>
+        <title>TransNeuronSocial</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+
+        <script src="https://use.fontawesome.com/d905d20ea8.js"></script>
 
         <!-- Styles -->
         <style>
@@ -47,6 +49,8 @@
 
             .title {
                 font-size: 84px;
+                color: #d10600;
+                font-weight: 700;
             }
 
             .links > a {
@@ -62,23 +66,18 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
-            .custom-button{
-                margin-right: 100px; 
-                background-color: red;
-                color: #fff;
-                border-radius: 4px;
-            }
+            
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height" style="background-image: url('img/home-bg.jpg');">
+        <div class="flex-center position-ref full-height" style="background-image: url('img/rpo.jpg');">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}" class="custom-button">Home</a>
+                        <a href="{{ url('/home') }}" style="color: #000; font-size: 1em;text-transform:none;">Hi {{Auth::user()->name}}</a>
                     @else
-                        <a href="{{ route('login') }}" style="color: #000;">Login</a>
-                        <a href="{{ route('register') }}" style="color: #000;">Register</a>
+                        <a href="{{ route('login') }}" style="color: #000;">Sign in</a>
+                        <a href="{{ route('register') }}" style="color: #000;">Sign Up</a>
                     @endauth
                 </div>
             @endif
@@ -89,7 +88,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="">Friends</a>
+                    <a href="{{ url('friends') }}">Friends</a>
                     <a href="">Follower</a>
                     <a href="">Following</a>
                     <a href="">me !</a>

@@ -12,35 +12,36 @@ class UserController extends Controller
 {
     
     // Home page
-        public function index(Request $request)
-        {
-        	$friend = User::find(Auth::user()->id);
+    
+    public function index(Request $request)
+    {
+    	$friend = User::find(Auth::user()->id);
 
-    		$friend = $friend->whereHas('follower',function($q) {
-    			$q->where('follower_id',Auth::user()->id);
-    	    		})
-    	    	->orwhereHas('following',function($q) {
-    	    			$q->where('following_id',Auth::user()->id);
-    	    		})->pluck('id');
+		$friend = $friend->whereHas('follower',function($q) {
+			$q->where('follower_id',Auth::user()->id);
+	    		})
+	    	->orwhereHas('following',function($q) {
+	    			$q->where('following_id',Auth::user()->id);
+	    		})->pluck('id');
 
-        	if($request['search'])
-        	{
-        		$user = User::where('name','like','%'.$request['search'].'%')->where('id','!=',Auth::user()->id)->whereNotIn('id',$friend)->get();
+    	if($request['search'])
+    	{
+    		$user = User::where('name','like','%'.$request['search'].'%')->where('id','!=',Auth::user()->id)->whereNotIn('id',$friend)->get();
 
-        		if(count($user))
-        		{
-        			$message = NULL;
-        		}else{
-        			$message = 'No Record found. please try something else !';
-        		}
-        		
-        	}else{
-        		$user = NULL;		
-        		$message = NULL;    
-        	}
+    		if(count($user))
+    		{
+    			$message = NULL;
+    		}else{
+    			$message = 'No Record found. please try something else ! or check your friend request bucket';
+    		}
+    		
+    	}else{
+    		$user = NULL;		
+    		$message = NULL;    
+    	}
 
-        	return view('index',compact('user','message'));		
-        }
+    	return view('index',compact('user','message'));		
+    }
 
     // Add to friend
 

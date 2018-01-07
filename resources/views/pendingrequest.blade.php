@@ -1,5 +1,11 @@
 @extends('layouts.app')
-
+  <style type="text/css">
+    body{
+      background-image: url('img/request.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
 @section('content')
 <div class="container">
     <div class="row">
@@ -7,7 +13,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Pending Request</div>
 
-                <div class="panel-body">
+                <div class="panel-body"  style="background-color: #f5efef;">
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
@@ -22,13 +28,13 @@
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody>@php $i = 1;@endphp
                               @foreach($pendingRequest as $key=>$request)
                                   <tr>
-                                    <th scope="row">1</th>
+                                    <th scope="row">{{$i}}</th>
                                     <td>{{$request->name}}</td>
                                     <td><a href="{{url('/acceptRequest/'.$request->id)}}">Accept</a></td>
-                                  </tr>
+                                  </tr>@php $i++;@endphp
                               @endforeach
                           </tbody>
                       </table>

@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Trans Neuron') }}</title>
+    <title>{{ config('app.name', 'TransNeuronSocial') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -30,7 +30,8 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'TransNeuron') }}
+                        {{-- config('app.name', 'TransNeuronSocial') --}}
+                        TransNeuron<span style="color: red;">Social</span>
                     </a>
                 </div>
 

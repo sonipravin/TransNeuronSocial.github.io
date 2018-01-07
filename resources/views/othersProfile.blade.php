@@ -22,10 +22,10 @@
                               <th scope="col">Connection</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody>@php $i = 1;@endphp
                             @foreach($OtherSfriend as $key=>$Otherfriend)
                                 <tr>
-                                  <th scope="row">1</th>
+                                  <th scope="row">{{$i}}</th>
                                   <td>
                                     @if($Otherfriend->id == Auth::user()->id)
                                       <a href="{{ route('friends') }}">{{$Otherfriend->name}}</a>
@@ -39,7 +39,7 @@
                                       Mutual
                                     @endif
                                   </td>
-                                </tr>
+                                </tr>@php $i++;@endphp
                             @endforeach
                         </tbody>
                     </table>
