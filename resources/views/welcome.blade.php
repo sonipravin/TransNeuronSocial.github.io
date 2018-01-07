@@ -49,7 +49,6 @@
 
             .title {
                 font-size: 84px;
-                color: #d10600;
                 font-weight: 700;
             }
 
@@ -84,7 +83,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Social Network
+                    TransNeuron<span style="color: #d10600;">Social</span>
                 </div>
 
                 <div class="links">
