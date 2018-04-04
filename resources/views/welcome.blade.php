@@ -83,7 +83,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    ILOVEYOU<span style="color: #d10600;">Honey</span>
+                    TranNeuron<span style="color: #d10600;">Social</span>
                 </div>
 
                 <div class="links">
