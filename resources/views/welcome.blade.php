@@ -75,15 +75,15 @@
                     @auth
                         <a href="{{ url('/home') }}" style="color: #000; font-size: 1em;text-transform:none;">Hi {{Auth::user()->name}}</a>
                     @else
-                        <a href="{{ route('login') }}" style="color: #000;">Login</a>
-                        <a href="{{ route('register') }}" style="color: #000;">Register</a>
+                        <a href="{{ url('login') }}" style="color: #000;">Login</a>
+                        <a href="{{ url('register') }}" style="color: #000;">Register</a>
                     @endauth
                 </div>
             @endif
 
             <div class="content">
                 <div class="title m-b-md">
-                    TranNeuron<span style="color: #d10600;">Social</span>
+                    TransNeuron<span style="color: #d10600;">Social</span>
                 </div>
 
                 <div class="links">
