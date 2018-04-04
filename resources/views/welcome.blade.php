@@ -75,8 +75,8 @@
                     @auth
                         <a href="{{ url('/home') }}" style="color: #000; font-size: 1em;text-transform:none;">Hi {{Auth::user()->name}}</a>
                     @else
-                        <a href="{{ route('login') }}" style="color: #000;">Sign in</a>
-                        <a href="{{ route('register') }}" style="color: #000;">Sign Up</a>
+                        <a href="{{ route('login') }}" style="color: #000;">Login</a>
+                        <a href="{{ route('register') }}" style="color: #000;">Register</a>
                     @endauth
                 </div>
             @endif

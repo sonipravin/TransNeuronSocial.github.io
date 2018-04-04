@@ -32,7 +32,7 @@
                           <p>Note: Only no friend/request user will be shown on query</p>
                       </div>
                   </form>
-                  @if(count($user))
+                  @if($user)
                     <table class="table table-dark" style="background-color: #f5efef;">
                       <thead>
                           <tr>
